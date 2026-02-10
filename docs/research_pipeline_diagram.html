@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Pipeline Diagram - AI Swarm Fingerprinting</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            padding: 10px 20px;
+            background: #f5f5f5;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .controls {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        #diagram-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #ffffff;
+            position: relative;
+        }
+
+        /* Ensure the svg takes full space */
+        .mermaid {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Research Pipeline Diagram</h1>
+        <div class="controls">Scroll to zoom • Drag to pan</div>
+    </header>
+    <div id="diagram-container">
+        <div class="mermaid">
+            graph TD
+            %% Styling
+            classDef phase fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+            classDef cluster fill:#f5f5f5,stroke:#9e9e9e,stroke-width:1px,stroke-dasharray: 5 5;
+            classDef nodebox fill:#ffffff,stroke:#333333,stroke-width:1px;
+
+            %% Phase 1: Data Generation
+            subgraph P1 [PHASE 1: DATA GENERATION]
+            direction TB
+
+            subgraph Sources [Data Sources]
+            direction LR
+            T1["TIER 1<br />Controlled Simulation"]
+            T2["TIER 2<br />LLM-in-Loop Sandbox"]
+            T3["TIER 3<br />Injection Based"]
+            end
+
+            SS["SWARM SIMULATOR<br />• Multi-agent LLM framework<br />• Sandboxed target environment<br />• ATT&CK
+            sequence execution<br />• Configurable parameters"]
+
+            RDC["RAW DATA COLLECTION<br />• Network traffic PCAPs<br />• System logs<br />• Agent decision logs<br />•
+            Inter-agent comms"]
+
+            Comparison["PARALLEL: Generate human red team<br />+ traditional botnet data"]
+
+            T1 --> SS
+            T2 --> SS
+            T3 --> SS
+            SS --> RDC
+            SS -.- Comparison
+            end
+            class P1 phase
+
+            %% Phase 2: Feature Engineering
+            subgraph P2 [PHASE 2: FEATURE ENGINEERING]
+            direction TB
+
+            subgraph Features [Feature Extraction]
+            direction LR
+            TF["TEMPORAL<br />• Timing stats<br />• Burst patterns<br />• Phase sync"]
+            SF["SEQUENCE<br />• Action n-grams<br />• State trans.<br />• Technique order"]
+            GF["GRAPH<br />• Agent-target<br />• Centrality<br />• Community"]
+            CF["COMMS<br />• Message freq<br />• Content entropy<br />• Coordination"]
+            end
+
+            StatFinger["STATISTICAL FINGERPRINTS<br />• Perplexity scores<br />• Burstiness index<br />• Action
+            entropy<br />• Repetition index"]
+
+            RDC --> Features
+            RDC --> StatFinger
+            end
+            class P2 phase
+
+            %% Phase 3: Graph Construction
+            subgraph P3 [PHASE 3: GRAPH CONSTRUCTION]
+            HTG["HETEROGENEOUS TEMPORAL GRAPH<br /><br />Nodes: Agents, Targets<br />Edges: Attack, Coordinate,
+            Communicate<br />Features: Histograms, Timing, Success/Fail"]
+            end
+            class P3 phase
+
+            %% Phase 4: Model Training
+            subgraph P4 [PHASE 4: MODEL TRAINING]
+            direction TB
+
+            subgraph Baselines [Baseline Detectors]
+            direction LR
+            B1["Isolation Forest<br />Anomaly Detect"]
+            B2["Autoencoder<br />Reconstruct Error"]
+            B3["GNN<br />GraphSAGE"]
+            B4["LSTM<br />Sequence Classify"]
+            end
+
+            SF_CLF["Statistical<br />Fingerprint RF"]
+
+            Meta["META-ENSEMBLE CLASSIFIER<br />Logistic Regression / XGBoost"]
+
+            Pred["Final Prediction:<br />Human / AI Swarm / Bot"]
+
+            TF --> B1
+            SF --> B4
+            GF --> B3
+            CF --> B3
+            StatFinger --> SF_CLF
+
+            Features --> B2
+
+            B1 --> Meta
+            B2 --> Meta
+            B3 --> Meta
+            B4 --> Meta
+            SF_CLF --> Meta
+
+            Meta --> Pred
+            end
+            class P4 phase
+
+            %% Phase 5: Evaluation & Attribution
+            subgraph P5 [PHASE 5: EVALUATION & ATTRIBUTION]
+            Metrics["EVALUATION METRICS<br />• PR-AUC >= 0.85<br />• F1-Score >= 0.80<br />• Latency
+            <= 5 min"] Labeling["HIERARCHICAL LABELING<br />L1: Attack Present?<br />L2: Attack Class<br />L3:
+            Coordination Type<br />L4: Agent Attribution<br />L5: Swarm ID<br />L6: Operator Type"]
+
+            Pred --> Metrics
+            Pred --> Labeling
+            end
+            class P5 phase
+
+            %% Phase 6: Deliverables
+            subgraph P6 [PHASE 6: DELIVERABLES]
+            direction LR
+            D1["BENCHMARK DATASET<br />Synthetic traffic<br />Ground truth"]
+            D2["DETECTION SYSTEM<br />Real-time classifier<br />Dashboard viz"]
+            D3["RESEARCH PAPER<br />Novel framework<br />MITRE extension"]
+
+            OS["OPEN SOURCE RELEASE<br />GitHub: swarm-fingerprint-benchmark"]
+
+            Labeling --> D1
+            Labeling --> D2
+            Labeling --> D3
+            D1 --> OS
+            end
+            class P6 phase
+
+            %% Main Flow Connections
+            RDC ==>|Source Data| P2
+            Features ==>|Extracted Features| P3
+            StatFinger ==>|Fingerprints| P4
+            HTG ==>|Graph Structure| B3
+            HTG ==>|Graph Structure| P4
+
+            %% Style adjustments
+            style SS fill:#fff3e0,stroke:#e65100
+            style HTG fill:#e8f5e9,stroke:#2e7d32
+            style Meta fill:#f3e5f5,stroke:#4a148c
+            style Pred fill:#ffebee,stroke:#c62828,stroke-width:2px
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: { useMaxWidth: false, htmlLabels: true }
+        });
+
+        // Initialize pan-zoom after mermaid renders
+        var checkExist = setInterval(function () {
+            var svgElement = document.querySelector(".mermaid svg");
+            if (svgElement) {
+                clearInterval(checkExist);
+                // Slight delay to ensure layout is done
+                setTimeout(() => {
+                    svgPanZoom(svgElement, {
+                        zoomEnabled: true,
+                        controlIconsEnabled: true,
+                        fit: true,
+                        center: true,
+                        minZoom: 0.1
+                    });
+                }, 100);
+            }
+        }, 100);
+    </script>
+</body>
+
+</html>
